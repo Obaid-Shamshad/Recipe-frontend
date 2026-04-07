@@ -65,21 +65,23 @@ function ReadRecipe() {
 
     return (
         <>
-            {readRecipe && <div className='flex sm:px-20 px-2 flex-col lg:flex-row gap-6 mb-4 mt-20' key={readRecipe._id}>
-                <img src={readRecipe.imageUrl} alt="recipe" className="w-96 aspect-square object-cover" />
-                <div>
-                    <h1 className='text-2xl font-bold mb-2'>Recipe Name</h1>
-                    <p>{readRecipe.name}</p>
+            {readRecipe && <div className='flex justify-center min-h-screen mt-20 p-2' key={readRecipe._id}>
+                <div className='flex w-140 flex-col gap-3'>
+                    <img src={readRecipe.imageUrl} alt="recipe" className="w-140 aspect-4/3 object-cover" />
+                    <div className='flex justify-between'>
+                        <p className='text-2xl font-semibold'>{readRecipe.name}</p>
+                        <p className='text-2xl text-yellow-500 fill-amber-500'>★☆</p>
+                    </div>
                     {userId && (
-                        <button onClick={isSaved ? handleUnsaveRecipe : handleSavedRecipe} className= ' bg-yellow-500 text-white hover:bg-yellow-600 p-1 px-2 rounded-md'>
+                        <button onClick={isSaved ? handleUnsaveRecipe : handleSavedRecipe} className=' bg-yellow-500 w-fit text-white hover:bg-yellow-600 p-1 px-2 rounded-md'>
                             {isSaved ? 'Unsave' : 'Save'}
                         </button>
                     )}
-                    <h1 className='text-2xl font-bold mb-2'>Ingradient</h1>
-                    <p>{readRecipe.gradient}</p>
-                    <h1 className='text-2xl font-bold mb-2'>Description</h1>
+                    <div>
+                        <h1 className='text-xl font-semibold mb-2'>Ingradient</h1>
+                        <p className='font-semibold'>{readRecipe.gradient}</p>
+                    </div>
                     <p>{readRecipe.description}</p>
-
                 </div>
             </div>
 

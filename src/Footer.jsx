@@ -12,14 +12,14 @@ function Footer() {
                         Cook. Share. Enjoy.
                     </p>
                 </div>
-                <div>
+                <div className='flex flex-col items-center'>
                     <Link to="/#allRecipes" className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">All Recipes</Link>
                     <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Top Rated</h3>
                     <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Recently Added</h3>
                     <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Seasonal</h3>
                 </div>
-                <div className='flex flex-col'>
-                    <Link to="/about" className="text-lg  mt-2 hover:text-gray-300 hover:underline cursor-pointer">About Us</Link>
+                <div className='flex flex-col items-center'>
+                    <Link to="/about" className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">About Us</Link>
                     <Link to="/contact" className="text-lg  mt-2 hover:text-gray-300 hover:underline cursor-pointer">Contact</Link>
                     <h3 className="text-lg  mt-2 hover:text-gray-300 hover:underline cursor-pointer">Privacy Policy</h3>
                     <h3 className="text-lg  mt-2 hover:text-gray-300 hover:underline cursor-pointer">Terms of Service</h3>

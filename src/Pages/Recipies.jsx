@@ -19,7 +19,6 @@ function Recipies() {
             try {
                 const response = await axios.get('http://localhost:5000/recipe/get-recipies');
                 setRecipies(response.data);
-                console.log("dfdf")
             } catch (error) {
                 console.error('Error fetching recipies:', error);
             }
@@ -38,7 +37,6 @@ function Recipies() {
             .then(response => {
                 setRecipies(response.data);
                 cahceRef.current[tab] = response.data;
-                console.log(tab)
             })
             .catch(error => {
                 console.error('Error fetching recipies:', error);
