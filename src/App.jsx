@@ -16,6 +16,7 @@ import About from './Pages/About'
 import Contact from './Pages/Contact'
 import ScrollToTop from './ScrollToTop'
 import ScrollToView from './ScrollToView'
+import TopRated from './Pages/TopRated'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 
@@ -52,6 +53,7 @@ function App() {
         <Route path="/create-recipe" element={<CreateRecipe />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/top-rated-recipes" element={<TopRated />} />
         <Route path="/my-recipes" element={
           <ProtectedRoutes>
             <MyRecipe />

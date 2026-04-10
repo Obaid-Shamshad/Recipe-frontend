@@ -14,7 +14,7 @@ function Footer() {
                 </div>
                 <div className='flex flex-col items-center'>
                     <Link to="/#allRecipes" className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">All Recipes</Link>
-                    <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Top Rated</h3>
+                    <Link to="/top-rated-recipes" className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Top Rated</Link>
                     <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Recently Added</h3>
                     <h3 className="text-lg mt-2 hover:text-gray-300 hover:underline cursor-pointer">Seasonal</h3>
                 </div>

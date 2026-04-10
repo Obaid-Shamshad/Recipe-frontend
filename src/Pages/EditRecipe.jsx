@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 function EditRecipe() {
     const { recipeId } = useParams();
     const userId = window.localStorage.getItem("userId") || null
-    
+
     const [recipeData, setRecipeData] = useState({
         name: '',
         gradient: '',
@@ -15,8 +15,8 @@ function EditRecipe() {
         userId: userId
     })
 
-    
-    
+
+
 
     useEffect(() => {
         const fetchEditRecipe = async () => {
@@ -25,7 +25,7 @@ function EditRecipe() {
                     withCredentials: true
                 });
                 if (response.data === "unauthorized") {
-                    alert("Please login to see this recipe.")
+                    alert("Please login to see edit recipe.")
                     window.localStorage.removeItem("userId");
                     navigate("/login");
                     return;
@@ -75,7 +75,7 @@ function EditRecipe() {
     return (
         <div>
             <div className='flex justify-center bg-gray-300 items-center h-screen fixed top-0 left-0 w-full '>
-                <form onSubmit={handleSubmit} className='p-4 bg-white rounded-md mt-28 md:mt-20 shadow-md w-96'>
+                {userId && <form onSubmit={handleSubmit} className='p-4 bg-white rounded-md mt-28 md:mt-20 shadow-md w-96'>
                     <h1 className="text-2xl text-center font-bold mb-4">Edit Recipe</h1>
                     <div className='mb-4 flex flex-col gap-1'>
                         <label htmlFor="name" className='font-medium'>Recipe Name</label>
@@ -94,7 +94,7 @@ function EditRecipe() {
                         <input type="text" id="imageUrl" name="imageUrl" value={recipeData.imageUrl} onChange={handleChange} className='p-1 px-2 outline-none border rounded-md focus:shadow focus:border-blue-400 focus:shadow-blue-300' />
                     </div>
                     <button type="submit" className='bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600'>Edit Recipe</button>
-                </form>
+                </form>}
             </div>
         </div>
     )

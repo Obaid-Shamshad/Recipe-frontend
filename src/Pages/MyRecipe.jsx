@@ -9,10 +9,10 @@ import Model from '../Model'
 
 function MyRecipe() {
   const [myRecipes, setMyRecipes] = useState([]);
-  const userId = window.localStorage.getItem("userId") || null;
   const [isDeleting, setIsDeleting] = useState(false);
   const [recipeToDelete, setRecipeToDelete] = useState(null);
-
+  
+  const userId = window.localStorage.getItem("userId") || null;
 
   const navigate = useNavigate();
 
@@ -23,8 +23,8 @@ function MyRecipe() {
           withCredentials: true
         });
         if (response.data === "unauthorized") {
-          alert("Please login to see your recipes.")
           window.localStorage.removeItem("userId");
+          alert("Please login to see your recipes.")
           navigate("/login");
           return;
         }
@@ -68,16 +68,17 @@ function MyRecipe() {
 
   return (
     <>
-      <div className='min-h-screen'>
-       {myRecipes.length > 0 && <h1 className='text-4xl font-bold text-center mt-20 mb-4'>My Recipes</h1>}
-        {myRecipes && myRecipes.map(recipe => {
-          return <div className='flex justify-center mb-2' key={recipe._id}>
-            <div className='p-4 hover:shadow-[0_0_8px_rgba(0,0,0,0.5)] hover:shadow-gray-700 transition-shadow duration-300 rounded-md '>
-              <div className='flex flex-col gap-2 p-4  bg-gray-300'>
+      <div className='min-h-screen p-2'>
+        {myRecipes.length > 0 && <h1 className='text-4xl font-bold text-center mt-20 mb-4'>My Recipes</h1>}
+        <div className='flex flex-col items-center mb-2'>
+          {myRecipes && myRecipes.map(recipe => {
+            return <div className='w-full' key={recipe._id}>
+              <div className='p-4 m-auto max-w-72 hover:shadow-[0_0_8px_rgba(0,0,0,0.5)] hover:shadow-gray-700 transition-shadow duration-300 rounded-md flex flex-col'>
+              <div className='flex flex-col gap-2 p-4  bg-gray-200'>
                 <Link to={"/read-recipe/" + recipe._id}>
                   <div>
-                    <h1 className='text-2xl '> {recipe.name} </h1>
-                    <img src={recipe.imageUrl} alt="recipe" className="w-64 h-64 object-cover" />
+                    <h1 className='text-2xl mb-2'> {recipe.name} </h1>
+                    <img src={recipe.imageUrl} alt="recipe" className="w-full aspect-square bg-gray-300 object-cover" />
                   </div>
                 </Link>
                 <div className='flex gap-2'>
@@ -85,14 +86,15 @@ function MyRecipe() {
                   <button onClick={() => deleting(recipe._id)} className='bg-red-500 text-white p-2 rounded-md hover:bg-red-600 px-4'>Delete</button>
                 </div>
               </div>
+              {userId && myRecipes.length === 0 && <h1 className='flex justify-center items-center h-screen text-3xl'>You have no recipes.</h1>}
+
             </div>
-            {myRecipes.length === 0 && <h1 className='flex justify-center items-center h-screen text-3xl'>You have no recipes.</h1>}
+            </div>
 
-          </div>
 
-        })
-        }
-
+          })
+          }
+        </div>
         {isDeleting && <Model onClose={closeModel} onConfirm={() => handleDelete(recipeToDelete)} title="Are you sure you want to delete this recipe?" />}
 
 

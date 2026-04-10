@@ -32,7 +32,7 @@ useEffect(() => {
 
   return (
   <>
-    <div className='h-96 overflow-hidden relative mt-20 mx-4 md:mx-24' onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+    <div className='h-64 sm:h-96 overflow-hidden relative mt-20 mx-4 md:mx-24' onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
       
       <div className='flex  h-full overflow-hidden'>
         {images.map((image, index) => (

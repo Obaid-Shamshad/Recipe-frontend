@@ -43,7 +43,7 @@ function Nav({ checkedLogin }) {
           )}
 
         </div>}
-        {!checkedLogin && <p className='p-2 border border-transparent'>Loading...</p>}
+        {!checkedLogin && <p className='p-2 border border-transparent text-transparent'>Loading...</p>}
       </nav>
       <div className={`${isMenuOpen ? 'top-16' : '-top-40'} fixed z-10 left-0 w-full transition-all sm:hidden  duration-300 ease`}>
         <HumbergerMenu setIsMenuOpen={setIsMenuOpen} />

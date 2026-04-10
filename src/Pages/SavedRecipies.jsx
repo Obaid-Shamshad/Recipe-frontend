@@ -7,16 +7,17 @@ import { useNavigate } from 'react-router-dom'
 function SavedRecipies() {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const navigate = useNavigate();
+  const userId = window.localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recipe/saved-recipes/' + window.localStorage.getItem('userId'), {
+        const response = await axios.get('http://localhost:5000/recipe/saved-recipes/' + userId, {
           withCredentials: true
         });
         if (response.data === "unauthorized") {
-          alert("Please login to view saved recipes.")
           window.localStorage.removeItem("userId");
+          alert("Please login to view saved recipes.")
           navigate("/login");
           return;
         }
@@ -31,24 +32,26 @@ function SavedRecipies() {
 
   return (
     <>
-     <div className="min-h-screen">
+     <div className="min-h-screen p-2">
        {savedRecipes.length > 0 && <h1 className='text-4xl font-bold text-center mt-20 mb-4'>Your Saved Recipes</h1>}
-       <div className='m-4'>
+      
          {savedRecipes && savedRecipes.map(recipe => {
           return <div className='flex justify-center mb-2' key={recipe._id}>
-            <div className='flex flex-col gap-2 p-4 justify-center hover:shadow-[0_0_8px_rgba(0,0,0,0.5)] hover:shadow-gray-700 transition-shadow duration-300 rounded-md' key={recipe._id}>
+           <div className='w-full'>
+             <div className='flex max-w-72 mx-auto flex-col gap-2 p-4 justify-center hover:shadow-[0_0_8px_rgba(0,0,0,0.5)] hover:shadow-gray-700 transition-shadow duration-300 rounded-md' key={recipe._id}>
             <Link to={"/read-recipe/" + recipe._id}>
-              <div className='flex flex-col gap-2 p-4 bg-gray-300'>
+              <div className='flex flex-col gap-2 p-4 bg-gray-200 '>
                 <h1 className='text-2xl '> {recipe.name} </h1>
-                <img src={recipe.imageUrl} alt="recipe" className="w-64 h-64 object-cover" />
+                <img src={recipe.imageUrl} alt="recipe" className="w-full aspect-square  bg-gray-300  object-cover" />
               </div>
             </Link>
           </div>
+           </div>
           </div>
         })
         }
-       </div>
-        {savedRecipes.length === 0 && <h1 className='flex justify-center items-center h-screen text-3xl'>You have no saved recipes.</h1>}
+      
+        {userId && savedRecipes.length === 0 && <h1 className='flex justify-center items-center h-screen text-3xl'>You have no saved recipes.</h1>}
      </div>
     </>
   )

@@ -6,16 +6,19 @@ import { useParams } from 'react-router-dom'
 function ReadRecipe() {
     const [readRecipe, setReadRecipe] = useState(null);
     const [isSaved, setIsSaved] = useState(false);
+    const [recipeRating, setRecipeRating] = useState(null);
+    const [avgRating, setAvgRating] = useState(null)
     const { recipeId } = useParams();
 
     const userId = window.localStorage.getItem("userId") || null;
-
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const fetchReadRecipe = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/recipe/get-read-recipie/' + recipeId);
                 setReadRecipe(response.data);
+                setAvgRating(response.data.avgRating)
             } catch (error) {
                 console.error('Error fetching read recipe:', error);
             }
@@ -27,23 +30,44 @@ function ReadRecipe() {
                 const savedRecipes = savedRecipesResponse.data;
                 const isRecipeSaved = savedRecipes.some(recipe => recipe._id === recipeId);
                 setIsSaved(isRecipeSaved);
+
             } catch (error) {
                 console.error('Error checking saved recipes:', error);
             }
         };
 
+        const getUserRating = async () => {
+            try {
+                const response = await axios.post('http://localhost:5000/rating/get-userRating', {
+                    userId, recipeId
+                });
+                setRecipeRating(response.data)
+
+            } catch (error) {
+                console.error("Error while getting user rating", error)
+            }
+
+        }
+
         if (userId) {
             checkSavedRecipes();
+            getUserRating();
         }
         fetchReadRecipe();
     }, []);
 
     const handleSavedRecipe = async () => {
         try {
-            await axios.put('http://localhost:5000/recipe/save-recipe', {
+            let response = await axios.put('http://localhost:5000/recipe/save-recipe', {
                 userId: userId,
                 recipeId: recipeId
             });
+            if (response.data === "unauthorized") {
+                window.localStorage.removeItem("userId");
+                alert("Please login to save recipes.")
+                navigate("/login");
+                return;
+            }
             setIsSaved(true);
         } catch (error) {
             console.error('Error saving recipe:', error);
@@ -52,13 +76,38 @@ function ReadRecipe() {
 
     const handleUnsaveRecipe = async () => {
         try {
-            await axios.put('http://localhost:5000/recipe/unsave-recipe', {
+            let response = await axios.put('http://localhost:5000/recipe/unsave-recipe', {
                 userId: userId,
                 recipeId: recipeId
             });
+            if (response.data === "unauthorized") {
+                window.localStorage.removeItem("userId");
+                alert("Please login to view unsave recipes.")
+                navigate("/login");
+                return;
+            }
             setIsSaved(false);
         } catch (error) {
             console.error('Error un saving recipe:', error);
+        }
+    };
+
+    const handleRating = async (rating) => {
+        try {
+            const response = await axios.post('http://localhost:5000/rating/rate-recipe', {
+                userId: userId,
+                recipeId: recipeId,
+                rating: rating
+            });
+            if (response.data === "unauthorized") {
+                window.localStorage.removeItem("userId");
+                alert("Please login to rate recipes.")
+                navigate("/login");
+                return;
+            }
+            setRecipeRating(rating);
+        } catch (error) {
+            console.error('Error rating recipe:', error);
         }
     };
 
@@ -66,22 +115,35 @@ function ReadRecipe() {
     return (
         <>
             {readRecipe && <div className='flex justify-center min-h-screen mt-20 p-2' key={readRecipe._id}>
-                <div className='flex w-140 flex-col gap-3'>
+                <div className='flex w-140 flex-col gap-2'>
                     <img src={readRecipe.imageUrl} alt="recipe" className="w-140 aspect-4/3 object-cover" />
                     <div className='flex justify-between'>
                         <p className='text-2xl font-semibold'>{readRecipe.name}</p>
-                        <p className='text-2xl text-yellow-500 fill-amber-500'>★☆</p>
+                        <div className='flex flex-col items-center'>
+                            {avgRating > 0 && <div className='flex gap-2'>
+                                <div className='bg-gray-400 bg-clip-text w-fit flex justify-between'><p className='bg-red-400 bg-clip-text text-transparent overflow' style={{ width: `${avgRating * 20}%` }}>★★★★★</p></div>
+                                <p className='text-sm'>({avgRating})</p>
+                            </div>}
+                            {userId && <div>
+                                {[1, 2, 3, 4, 5].map(star => (
+                                    <span key={star} className={`text-2xl cursor-pointer ${recipeRating >= star ? 'text-yellow-500' : 'text-gray-400'}`} onClick={() => handleRating(star)}>
+                                        ★
+                                    </span>
+                                ))}
+                            </div>}
+                        </div>
+
                     </div>
                     {userId && (
                         <button onClick={isSaved ? handleUnsaveRecipe : handleSavedRecipe} className=' bg-yellow-500 w-fit text-white hover:bg-yellow-600 p-1 px-2 rounded-md'>
                             {isSaved ? 'Unsave' : 'Save'}
                         </button>
                     )}
-                    <div>
+                    <div className='mt-4'>
                         <h1 className='text-xl font-semibold mb-2'>Ingradient</h1>
                         <p className='font-semibold'>{readRecipe.gradient}</p>
                     </div>
-                    <p>{readRecipe.description}</p>
+                    <p className='mt-6'>{readRecipe.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ad ducimus consequatur laboriosam commodi corrupti ipsa facere quo dicta odio libero, numquam earum maiores laudantium aliquam aperiam id perferendis voluptas?</p>
                 </div>
             </div>
 
