@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
 
 function CreateRecipe() {
   const userId = window.localStorage.getItem("userId") || null
@@ -13,7 +14,7 @@ function CreateRecipe() {
     userId: window.localStorage.getItem("userId") || null
   })
 
-   axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
   const handleChange = (e) => {
     const { name, value } = e.target
     setRecipeData(prevState => ({
@@ -27,14 +28,14 @@ function CreateRecipe() {
     try {
       const response = await axios.post('http://localhost:5000/recipe/create-recipe', recipeData)
       if (response.data === "unauthorized") {
-        alert("Please login to create a recipe.")
+        toast.warning("Please login to create a recipe.")
         window.localStorage.removeItem("userId");
         navigate("/login");
         return;
       }
       navigate("/my-recipes")
     } catch (error) {
-      console.error('Failed to create recipe:', error)
+      toast.error('Failed to create recipe')
     }
   }
 
@@ -59,8 +60,9 @@ function CreateRecipe() {
             <label htmlFor="imageUrl" className='font-medium'>Image URL</label>
             <input type="text" id="imageUrl" name="imageUrl" value={recipeData.imageUrl} onChange={handleChange} className='p-1 px-2 outline-none border rounded-md focus:shadow focus:border-blue-400 focus:shadow-blue-300' />
           </div>
-          <button type="submit" className='bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600'>Create Recipe</button>
+          <button type="submit" className='bg-blue-500 cursor-pointer text-white p-2 rounded-md w-full hover:bg-blue-600'>Create Recipe</button>
         </form>
+        <ToastContainer toastClassName="top-20" />
       </div>
     </>
   )

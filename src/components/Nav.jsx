@@ -21,18 +21,20 @@ function Nav({ checkedLogin }) {
 
   return (
     <>
-      <nav className='flex justify-between items-center p-4 bg-gray-800 fixed text-white w-full top-0 z-20 px-8'>
-        <div className='hidden sm:block' >
-          <div className='flex space-x-3'>
-            <NavLink to="/" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>Recipe App</NavLink>
-            <NavLink to="/create-recipe" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>Create Recipe</NavLink>
-            <NavLink to="/my-recipes" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>My Recipes</NavLink>
-            <NavLink to="/saved-recipes" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>Saved Recipes</NavLink>
-          </div>
-        </div>
-        <button className='sm:hidden text-4xl cursor-pointer' onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      <nav className='flex justify-between items-center p-4 bg-gray-800 fixed text-white w-full top-0 z-20 sm:px-8'>
+        <button className='sm:hidden text-2xl cursor-pointer' onClick={() => setIsMenuOpen(!isMenuOpen)}>
           ☰
         </button>
+        <div className='flex items-center'>
+          <h1 className='text-blue-600 text-2xl font-semibold sm:mr-8'>RecipeHub</h1>
+          <div className='hidden sm:block' >
+            <div className='flex space-x-3 items-center'>
+              <NavLink to="/" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>Recipes</NavLink>
+              <NavLink to="/top-rated-recipes" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>Top Rated</NavLink>
+              <NavLink to="/about" className={({ isActive }) => isActive ? 'text-gray-300' : 'hover:underline hover:text-gray-300'}>About Us</NavLink>
+            </div>
+          </div>
+        </div>
         {checkedLogin && <div>
           {userId ? (
             <button onClick={handleLogout} className='bg-red-500 text-white p-2 px-4 rounded cursor-pointer hover:bg-red-600 border border-transparent'>

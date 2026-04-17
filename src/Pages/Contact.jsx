@@ -1,5 +1,7 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 function Contact() {
     const [formData, setFormData] = useState({
@@ -20,11 +22,11 @@ function Contact() {
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/contact/send-email', formData);
-            alert('Message sent successfully!');
+            toast.success('Message sent successfully!');
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {
             console.error('Error sending message:', error);
-            alert('Failed to send message.');
+            toast.error('Failed to send message.');
         }
     };
 
@@ -45,9 +47,10 @@ function Contact() {
                         <label htmlFor="message" className='font-medium'>Message</label>
                         <textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder='Enter your message' className='border border-gray-400 p-1 px-2 rounded-md outline-none focus:shadow focus:border-blue-400 focus:shadow-blue-300 h-28' required></textarea>
                     </div>
-                    <button type="submit" className='bg-blue-500 font-medium text-xl text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow focus:shadow-blue-300 mt-6'>Send Message</button>
+                    <button type="submit" className='bg-blue-500 cursor-pointer font-medium text-xl text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow focus:shadow-blue-300 mt-6'>Send Message</button>
 
                 </form>
+                <ToastContainer toastClassName="top-20" />
             </div>
         </>
     )

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
 
 function EditRecipe() {
     const { recipeId } = useParams();
@@ -25,7 +26,7 @@ function EditRecipe() {
                     withCredentials: true
                 });
                 if (response.data === "unauthorized") {
-                    alert("Please login to see edit recipe.")
+                    toast.warning("Please login to see edit recipe.")
                     window.localStorage.removeItem("userId");
                     navigate("/login");
                     return;
@@ -61,21 +62,21 @@ function EditRecipe() {
         try {
             const response = await axios.put('http://localhost:5000/recipe/edit-recipe/' + recipeId, recipeData)
             if (response.data === "unauthorized") {
-                alert("Please login to edit this recipe.")
+                toast.warning("Please login to edit this recipe.")
                 window.localStorage.removeItem("userId");
                 navigate("/login");
                 return;
             }
             navigate("/my-recipes")
         } catch (error) {
-            console.error('Failed to edit recipe:', error)
+            toast.error('Failed to edit recipe')
         }
     }
 
     return (
         <div>
-            <div className='flex justify-center bg-gray-300 items-center h-screen fixed top-0 left-0 w-full '>
-                {userId && <form onSubmit={handleSubmit} className='p-4 bg-white rounded-md mt-28 md:mt-20 shadow-md w-96'>
+            <div className='flex justify-center bg-gray-300 items-center w-full min-h-screen'>
+                {userId && <form onSubmit={handleSubmit} className='p-4 bg-white rounded-md mt-20 mb-2 shadow-md w-96'>
                     <h1 className="text-2xl text-center font-bold mb-4">Edit Recipe</h1>
                     <div className='mb-4 flex flex-col gap-1'>
                         <label htmlFor="name" className='font-medium'>Recipe Name</label>
@@ -93,8 +94,9 @@ function EditRecipe() {
                         <label htmlFor="imageUrl" className='font-medium'>Image URL</label>
                         <input type="text" id="imageUrl" name="imageUrl" value={recipeData.imageUrl} onChange={handleChange} className='p-1 px-2 outline-none border rounded-md focus:shadow focus:border-blue-400 focus:shadow-blue-300' />
                     </div>
-                    <button type="submit" className='bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600'>Edit Recipe</button>
+                    <button type="submit" className='bg-blue-500 cursor-pointer text-white p-2 rounded-md w-full hover:bg-blue-600'>Edit Recipe</button>
                 </form>}
+                <ToastContainer toastClassName="top-20" />
             </div>
         </div>
     )
