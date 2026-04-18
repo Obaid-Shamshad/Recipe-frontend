@@ -6,10 +6,13 @@ import LazyImage from '../components/Lazyimage'
 function TopRated() {
     const [recipes, setRecipes] = useState([]);
 
+    const API_KEY = import.meta.env.VITE_SERVER_URL;
+
+
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/recipe/topRated-recipes');
+                const response = await axios.get(`${API_KEY}/recipe/topRated-recipes`);
                 setRecipes(response.data);
             } catch (error) {
                 console.error('Error fetching recipes:', error);

@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Forgetpass = () => {
   const [email, setEmail] = useState('');
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     axios.post('http://localhost:5000/auth/forget-password', { email })
-     .then(response => {
-        alert(response.data.message)
-     })
-     .catch(error => {
-        console.error("Error sending reset link:", error);
-        alert("Failed to send reset link. Please try again.");
-     });
-    }
+    axios.post(`${API_KEY}/auth/forget-password`, { email })
+      .then(response => {
+       toast.warning(response.data.message)
+      })
+      .catch(error => {
+        toast.error("Failed to send reset link. Please try again.");
+      });
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen fixed top-0 left-0 w-full bg-gray-100">
@@ -46,6 +47,7 @@ const Forgetpass = () => {
           </button>
         </form>
       </div>
+       <ToastContainer toastClassName="top-20" />
     </div>
   );
 };

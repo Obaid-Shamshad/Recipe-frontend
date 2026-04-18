@@ -11,16 +11,18 @@ function Login() {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://localhost:5000/auth/login', { username, password })
+      const response = await axios.post(`${API_KEY}/auth/login`, { username, password })
       if (response.data.message === "Login successful") {
         window.localStorage.setItem("userId", response.data.userId);
         toast.success(response.data);
         return navigate("/user");
       }
-      toast.success(response.data);
+      toast.warning(response.data);
     } catch (error) {
       toast.error("login failed");
     }

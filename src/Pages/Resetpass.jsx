@@ -2,6 +2,8 @@ import React, { useState, } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function Resetpass() {
   const [password, setPassword] = useState('');
@@ -21,10 +23,13 @@ function Resetpass() {
   //     }
   // }
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // if (!passErr) {
-    axios.post(`http://localhost:5000/auth/reset-password/${id}/${token}`, { password })
+    axios.post(`${API_KEY}/auth/reset-password/${id}/${token}`, { password })
       .then(response => {
         alert(response.data.message)
         if (response.data.status === 'success') {
@@ -32,8 +37,7 @@ function Resetpass() {
         }
       })
       .catch(error => {
-        console.error("Error resetting password:", error);
-        alert("Failed to reset password. Please try again.");
+        toast.error("Failed to reset password. Please try again.");
 
       });
     //  } else {
@@ -70,6 +74,7 @@ function Resetpass() {
           </button>
         </form>
       </div>
+       <ToastContainer toastClassName="top-20" />
     </div>
   )
 }

@@ -16,13 +16,13 @@ function EditRecipe() {
         userId: userId
     })
 
-
+    const API_KEY = import.meta.env.VITE_SERVER_URL;
 
 
     useEffect(() => {
         const fetchEditRecipe = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/recipe/get-edit-recipe/' + recipeId, {
+                const response = await axios.get(`${API_KEY}/recipe/get-edit-recipe/` + recipeId, {
                     withCredentials: true
                 });
                 if (response.data === "unauthorized") {

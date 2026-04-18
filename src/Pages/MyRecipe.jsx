@@ -15,13 +15,13 @@ function MyRecipe() {
   const [recipeToDelete, setRecipeToDelete] = useState(null);
 
   const userId = window.localStorage.getItem("userId") || null;
-
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMyRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recipe/get-my-recipes/' + userId, {
+        const response = await axios.get(`${API_KEY}/recipe/get-my-recipes/`+ userId, {
           withCredentials: true
         });
         if (response.data === "unauthorized") {
@@ -42,25 +42,28 @@ function MyRecipe() {
   const handleEdit = (recipeId) => {
     navigate("/edit-recipe/" + recipeId);
   }
-
-  const handleDelete = async (recipeId) => {
-    setIsDeleting(false);
-    try {
-      const response = await axios.delete('http://localhost:5000/recipe/delete-recipe/' + recipeId, {
-        withCredentials: true
-      });
-      // Remove the deleted recipe from the state
-      setMyRecipes(myRecipes.filter(recipe => recipe._id !== recipeId));
-    } catch (error) {
-      toast.error('Error deleting recipe');
-    }
-  };
-
   const deleting = (recipeId) => {
     setRecipeToDelete(recipeId);
     setIsDeleting(true);
     document.body.style.overflow = 'hidden';
   }
+
+  const handleDelete = async (recipeId) => {
+    setIsDeleting(false);
+    document.body.style.overflow = 'auto';
+    try {
+      const response = await axios.delete(`${API_KEY}/recipe/delete-recipe/` + recipeId, {
+        withCredentials: true
+      });
+     if(response.data.status == "success") {
+       setMyRecipes(myRecipes.filter(recipe => recipe._id !== recipeId));
+      toast.success("recipe deleted")
+     }
+    } catch (error) {
+      toast.error('Error deleting recipe');
+    }
+  };
+
 
   const closeModel = () => {
     setIsDeleting(false);

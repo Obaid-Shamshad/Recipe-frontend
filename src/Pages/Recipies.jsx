@@ -15,6 +15,8 @@ function Recipies() {
         "recent-10": null
     });
 
+    const API_KEY = import.meta.env.VITE_SERVER_URL;
+
     useEffect(() => {
         const fetchRecipes = async (tab) => {
             if (cahceRef.current[tab]) {
@@ -22,7 +24,7 @@ function Recipies() {
                 return;
             }
             try {
-                const response = await axios.get('http://localhost:5000/recipe/get-recipies?type=' + tab);
+                const response = await axios.get(`${API_KEY}/recipe/get-recipies?type=` + tab);
                 const result = response.data;
                 if (tab == "all") {
                     for (let i = result.length - 1; i > 0; i--) {

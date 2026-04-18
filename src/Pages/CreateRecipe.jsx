@@ -14,6 +14,8 @@ function CreateRecipe() {
     userId: window.localStorage.getItem("userId") || null
   })
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
   axios.defaults.withCredentials = true;
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -26,7 +28,7 @@ function CreateRecipe() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://localhost:5000/recipe/create-recipe', recipeData)
+      const response = await axios.post(`${API_KEY}/recipe/create-recipe`, recipeData)
       if (response.data === "unauthorized") {
         toast.warning("Please login to create a recipe.")
         window.localStorage.removeItem("userId");

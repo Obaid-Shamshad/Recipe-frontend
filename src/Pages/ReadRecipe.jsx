@@ -15,10 +15,12 @@ function ReadRecipe() {
     const userId = window.localStorage.getItem("userId") || null;
     axios.defaults.withCredentials = true;
 
+    const API_KEY = import.meta.env.VITE_SERVER_URL;
+
     useEffect(() => {
         const fetchReadRecipe = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/recipe/get-read-recipie/' + recipeId);
+                const response = await axios.get(`${API_KEY}/recipe/get-read-recipe/`+ recipeId);
                 setReadRecipe(response.data);
                 setAvgRating(response.data.avgRating)
             } catch (error) {
@@ -28,7 +30,7 @@ function ReadRecipe() {
 
         const checkSavedRecipes = async () => {
             try {
-                const savedRecipesResponse = await axios.get('http://localhost:5000/recipe/check-saved-recipes/' + userId);
+                const savedRecipesResponse = await axios.get(`${API_KEY}/recipe/check-saved-recipes/` + userId);
                 const savedRecipes = savedRecipesResponse.data;
                 const isRecipeSaved = savedRecipes.some(recipe => recipe._id === recipeId);
                 setIsSaved(isRecipeSaved);
@@ -40,7 +42,7 @@ function ReadRecipe() {
 
         const getUserRating = async () => {
             try {
-                const response = await axios.post('http://localhost:5000/rating/get-userRating', {
+                const response = await axios.post(`${API_KEY}/rating/get-userRating`, {
                     userId, recipeId
                 });
                 setRecipeRating(response.data)
@@ -60,7 +62,7 @@ function ReadRecipe() {
 
     const handleSavedRecipe = async () => {
         try {
-            let response = await axios.put('http://localhost:5000/recipe/save-recipe', {
+            let response = await axios.put(`${API_KEY}/recipe/save-recipe`, {
                 userId: userId,
                 recipeId: recipeId
             });
@@ -78,7 +80,7 @@ function ReadRecipe() {
 
     const handleUnsaveRecipe = async () => {
         try {
-            let response = await axios.put('http://localhost:5000/recipe/unsave-recipe', {
+            let response = await axios.put(`${API_KEY}/recipe/unsave-recipe`, {
                 userId: userId,
                 recipeId: recipeId
             });
@@ -96,7 +98,7 @@ function ReadRecipe() {
 
     const handleRating = async (rating) => {
         try {
-            const response = await axios.post('http://localhost:5000/rating/rate-recipe', {
+            const response = await axios.post(`${API_KEY}/rating/rate-recipe`, {
                 userId: userId,
                 recipeId: recipeId,
                 rating: rating

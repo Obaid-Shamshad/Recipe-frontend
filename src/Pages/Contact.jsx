@@ -10,6 +10,7 @@ function Contact() {
         message: ''
     });
 
+    const API_KEY = import.meta.env.VITE_SERVER_URL;
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -21,7 +22,7 @@ function Contact() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/contact/send-email', formData);
+            await axios.post(`${API_KEY}/contact/send-email`, formData);
             toast.success('Message sent successfully!');
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {

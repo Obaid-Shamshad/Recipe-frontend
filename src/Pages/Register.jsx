@@ -10,10 +10,12 @@ function Register() {
 
   const navigate = useNavigate();
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://localhost:5000/auth/register', { username, password, email })
+      const response = await axios.post(`${API_KEY}/auth/register`, { username, password, email })
 
       if (response.data === "success") {
         toast.success("User created successfully. Please login.")
@@ -28,7 +30,7 @@ function Register() {
   return (
     <>
       <div className='flex justify-center bg-gray-300 items-center h-screen fixed top-0 left-0 w-full '>
-        <form onSubmit={handleSubmit} className='p-6 bg-white rounded-md  shadow-md '>
+        <form onSubmit={handleSubmit} className='p-6 bg-white rounded-md w-80 mt-12 shadow-md '>
           <h1 className="text-2xl text-center font-bold mb-4">Register</h1>
           <div className='mb-4 flex flex-col gap-1'>
             <label htmlFor="username" className='font-medium'>Username</label>

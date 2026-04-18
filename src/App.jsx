@@ -26,10 +26,13 @@ import axios from 'axios'
 
 function App() {
   const [checkedLogin, setCheckedLogin] = useState(false);
+
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/auth/check-login', { withCredentials: true });
+        const response = await axios.get(`${API_KEY}/auth/check-login`, { withCredentials: true });
         if (response.data === "unauthorized") {
           window.localStorage.removeItem("userId");
         }

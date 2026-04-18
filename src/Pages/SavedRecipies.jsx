@@ -10,10 +10,13 @@ function SavedRecipies() {
   const navigate = useNavigate();
   const userId = window.localStorage.getItem("userId");
 
+  const API_KEY = import.meta.env.VITE_SERVER_URL;
+
+
   useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recipe/saved-recipes/' + userId, {
+        const response = await axios.get(`${API_KEY}/recipe/saved-recipes/`+ userId, {
           withCredentials: true
         });
         if (response.data === "unauthorized") {
